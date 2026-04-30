@@ -1,0 +1,15 @@
+button {
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+.package {
+    transition: 0.2s;
+}
+
+.package:hover {
+    transform: translateY(-5px);
+}

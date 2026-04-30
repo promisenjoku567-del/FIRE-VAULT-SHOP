@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin</title>
+<style>
+body { background:#0a0a0a; color:white; text-align:center; }
+.card { background:#1a1a1a; padding:20px; width:300px; margin:100px auto; }
+button { padding:10px; background:gold; border:none; }
+table { width:90%; margin:20px auto; border-collapse: collapse; }
+td, th { border:1px solid #333; padding:10px; }
+</style>
+</head>
+
+<body>
+
+<h1>Admin Panel</h1>
+
+<div id="loginBox" class="card">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+</div>
+
+<div id="dashboard" style="display:none;">
+
+<h2>Stats</h2>
+<p>Revenue: ₦<span id="rev">0</span></p>
+
+<button onclick="load()">Refresh</button>
+
+<table>
+<thead>
+<tr>
+<th>ID</th><th>Player</th><th>Package</th><th>Status</th>
+</tr>
+</thead>
+<tbody id="orders"></tbody>
+</table>
+
+</div>
+
+<script>
+async function login() {
+    let res = await fetch("/admin/login", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({ password: document.getElementById("pass").value })
+    });
+
+    let data = await res.json();
+
+    if (data.success) {
+        document.getElementById("loginBox").style.display="none";
+        document.getElementById("dashboard").style.display="block";
+        load();
+    }
+}
+
+async function load() {
+    let orders = await (await fetch("/admin/orders")).json();
+    let stats = await (await fetch("/admin/stats")).json();
+
+    document.getElementById("rev").innerText = stats.totalRevenue;
+
+    let html="";
+    orders.forEach(o=>{
+        html+=`<tr>
+        <td>${o.id}</td>
+        <td>${o.playerId}</td>
+        <td>${o.packageName}</td>
+        <td>${o.status}</td>
+        </tr>`;
+    });
+
+    document.getElementById("orders").innerHTML = html;
+}
+</script>
+
+</body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<canvas id="chart"></canvas>
+async function loadChart() {
+    let stats = await (await fetch("/admin/stats")).json();
+
+    new Chart(document.getElementById("chart"), {
+        type: "bar",
+        data: {
+            labels: ["Revenue", "Orders"],
+            datasets: [{
+                label: "Stats",
+                data: [stats.totalRevenue, stats.totalOrders]
+            }]
+        }
+    });
+}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

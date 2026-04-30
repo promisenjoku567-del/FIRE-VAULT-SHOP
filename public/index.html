@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kazking Diamonds</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0a0a0a, #111);
+    color: white;
+}
+
+/* HEADER */
+header {
+    background: #000;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: gold;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* CARD */
+.card {
+    background: #1a1a1a;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+/* INPUT */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 6px;
+    background: #2a2a2a;
+    color: white;
+}
+
+/* GRID PACKAGES */
+.packages {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.package {
+    background: #222;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid #333;
+    text-align: center;
+}
+
+.package:hover {
+    border-color: gold;
+}
+
+.package.active {
+    border-color: gold;
+    background: #333;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    padding: 12px;
+    background: gold;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: orange;
+}
+
+/* RESULT */
+.result {
+    margin-top: 15px;
+    text-align: center;
+    color: lightgreen;
+}
+</style>
+</head>
+
+<body>
+
+<header>🔥 KAZKING DIAMONDS STORE 🔥</header>
+
+<div class="container">
+<div class="card">
+
+<h3>Enter Player ID</h3>
+<input id="playerId" placeholder="Enter your Free Fire ID">
+
+<h3>Select Package</h3>
+
+<div class="packages">
+    <div class="package" onclick="selectPackage(this, '100 Diamonds', 500)">
+        100 💎 <br> ₦500
+    </div>
+
+    <div class="package" onclick="selectPackage(this, '310 Diamonds', 1200)">
+        310 💎 <br> ₦1200
+    </div>
+
+    <div class="package" onclick="selectPackage(this, '520 Diamonds', 2000)">
+        520 💎 <br> ₦2000
+    </div>
+
+    <div class="package" onclick="selectPackage(this, '1060 Diamonds', 4000)">
+        1060 💎 <br> ₦4000
+    </div>
+</div>
+
+<button onclick="buy()">Proceed to Payment</button>
+
+<div class="result" id="msg"></div>
+
+</div>
+</div>
+
+<script>
+let selectedPackage = null;
+let selectedPrice = null;
+
+function selectPackage(el, name, price) {
+    document.querySelectorAll(".package").forEach(p => p.classList.remove("active"));
+    el.classList.add("active");
+
+    selectedPackage = name;
+    selectedPrice = price;
+}
+
+async function buy() {
+    let playerId = document.getElementById("playerId").value;
+
+    if (!playerId) {
+        return document.getElementById("msg").innerText = "Enter Player ID";
+    }
+
+    if (!selectedPackage) {
+        return document.getElementById("msg").innerText = "Select a package";
+    }
+
+    let res = await fetch("/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            playerId,
+            packageName: selectedPackage,
+            price: selectedPrice
+        })
+    });
+
+    let data = await res.json();
+
+    document.getElementById("msg").innerText =
+    "Order created! ID: " + data.order.id;
+}
+</script>
+
+</body>
+</html>
