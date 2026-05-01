@@ -191,7 +191,7 @@ const db = firebase.firestore();
 /* 📊 LOAD ORDERS */
 function loadOrders() {
 
-  db.collection("orders")
+   db.collection("orders")
     .orderBy("time", "desc")
     .onSnapshot((snapshot) => {
 
