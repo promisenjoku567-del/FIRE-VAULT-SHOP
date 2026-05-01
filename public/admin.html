@@ -1,56 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>FIRE VAULT Admin</title>
+<meta charset="UTF-8">
+<title>FIRE VAULT ADMIN</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      background: #0f0f0f;
-      color: white;
-      font-family: Arial;
-      text-align: center;
-    }
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
-    h1 {
-      color: gold;
-    }
+<style>
+  body {
+    margin: 0;
+    font-family: Arial;
+    background: #0b0b0b;
+    color: white;
+  }
 
-    table {
-      width: 90%;
-      margin: auto;
-      border-collapse: collapse;
-    }
+  /* LOGIN */
+  #loginBox {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
-    th, td {
-      padding: 10px;
-      border: 1px solid #333;
-    }
+  #loginBox input {
+    padding: 12px;
+    width: 220px;
+    border: none;
+    border-radius: 6px;
+    margin: 10px;
+  }
 
-    th {
-      background: gold;
-      color: black;
-    }
+  #loginBox button {
+    padding: 10px 20px;
+    background: gold;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+  }
 
-    tr:hover {
-      background: #1a1a1a;
-    }
-  </style>
+  /* HEADER */
+  .header {
+    background: #111;
+    padding: 15px;
+    text-align: center;
+    border-bottom: 2px solid gold;
+  }
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  .header h1 {
+    margin: 0;
+    color: gold;
+  }
+
+  /* STATS BAR */
+  .stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+  }
+
+  .card {
+    background: #1a1a1a;
+    padding: 15px;
+    border-radius: 10px;
+    width: 30%;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(255,215,0,0.2);
+  }
+
+  .card h2 {
+    color: gold;
+    margin: 0;
+  }
+
+  /* TABLE */
+  table {
+    width: 95%;
+    margin: auto;
+    border-collapse: collapse;
+    background: #111;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  th, td {
+    padding: 12px;
+    border-bottom: 1px solid #222;
+    text-align: center;
+  }
+
+  th {
+    background: gold;
+    color: black;
+  }
+
+  tr:hover {
+    background: #1a1a1a;
+  }
+
+  /* STATUS BADGE */
+  .badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    background: green;
+    color: white;
+  }
+</style>
 </head>
 
 <body>
+
+<!-- 🔐 LOGIN -->
 <div id="loginBox">
   <h2>🔥 FIRE VAULT ADMIN LOGIN</h2>
-  <input type="password" id="password" placeholder="Enter Admin Password">
+  <input type="password" id="password" placeholder="Enter Password">
   <button onclick="login()">Login</button>
 </div>
 
+<!-- 📊 DASHBOARD -->
 <div id="dashboard" style="display:none;">
-  <h1>🔥 FIRE VAULT ADMIN</h1>
+
+  <div class="header">
+    <h1>🔥 FIRE VAULT DASHBOARD</h1>
+  </div>
+
+  <div class="stats">
+    <div class="card">
+      <h2 id="totalOrders">0</h2>
+      <p>Total Orders</p>
+    </div>
+
+    <div class="card">
+      <h2>LIVE</h2>
+      <p>Status</p>
+    </div>
+
+    <div class="card">
+      <h2>₦</h2>
+      <p>Earnings</p>
+    </div>
+  </div>
 
   <table>
     <thead>
@@ -62,54 +155,13 @@
         <th>Time</th>
       </tr>
     </thead>
-
     <tbody id="ordersTable"></tbody>
   </table>
+
 </div>
 
 <script>
-
-// 🔥 YOUR FIREBASE CONFIG (same as script.js)
-function loadOrders() {
-
-  const firebaseConfig = {
-    apiKey:  "AIzaSyDnwV4nIVyl1roL2jtgc1_YLcvyYCGKj2Y",
-    authDomain: "fire-vault-22555.firebaseapp.com",
-    projectId: "fire-vault-22555",
-    storageBucket: "fire-vault-22555.firebasestorage.app",
-    messagingSenderId: "589168743870",
-    appId:  "1:589168743870:web:38210ca30165a196d515ef"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-
-  db.collection("orders")
-    .orderBy("time", "desc")
-    .onSnapshot((snapshot) => {
-
-      let table = document.getElementById("ordersTable");
-      table.innerHTML = "";
-
-      snapshot.forEach((doc) => {
-        let order = doc.data();
-
-        table.innerHTML += `
-          <tr>
-            <td>${order.playerId}</td>
-            <td>${order.package}</td>
-            <td>₦${order.amount}</td>
-            <td>${order.reference}</td>
-            <td>${new Date(order.time).toLocaleString()}</td>
-          </tr>
-        `;
-      });
-
-    });
-
-}
-
-const ADMIN_PASSWORD = "1234"; // 🔥 CHANGE THIS LATER
+const ADMIN_PASSWORD = "1234";
 
 function login() {
   let input = document.getElementById("password").value;
@@ -122,7 +174,51 @@ function login() {
     alert("Wrong password");
   }
 }
-  
+
+/* 🔥 FIREBASE */
+const firebaseConfig = {
+  apiKey: "AIzaSyDnwV4nIVyl1roL2jtgc1_YLcvyYCGKj2Y",
+  authDomain: "fire-vault-22555.firebaseapp.com",
+  projectId: "fire-vault-22555",
+  storageBucket: "fire-vault-22555.firebasestorage.app",
+  messagingSenderId: "589168743870",
+  appId: "1:589168743870:web:38210ca30165a196d515ef"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+/* 📊 LOAD ORDERS */
+function loadOrders() {
+
+  db.collection("orders")
+    .orderBy("time", "desc")
+    .onSnapshot((snapshot) => {
+
+      let table = document.getElementById("ordersTable");
+      table.innerHTML = "";
+
+      let count = 0;
+
+      snapshot.forEach((doc) => {
+        let order = doc.data();
+        count++;
+
+        table.innerHTML += `
+          <tr>
+            <td>${order.playerId}</td>
+            <td>${order.package}</td>
+            <td>₦${order.amount}</td>
+            <td>${order.reference}</td>
+            <td>${new Date(order.time).toLocaleString()}</td>
+          </tr>
+        `;
+      });
+
+      document.getElementById("totalOrders").innerText = count;
+
+    });
+}
 </script>
 
 </body>
