@@ -1,3 +1,4 @@
+let orders = [];
 function payWithPaystack(amount, packageName) {
 
   let playerId = document.getElementById("playerId").value;
@@ -24,7 +25,30 @@ function payWithPaystack(amount, packageName) {
     },
 
 callback: function(response) {
+let adminNumber = "2349011567827";
 
+let adminMessage = `🔥 NEW ORDER RECEIVED
+
+💎 Package: ${packageName}
+🆔 Player ID: ${playerId}
+💳 Ref: ${response.reference}
+⏰ Time: ${new Date().toLocaleString()}`;
+
+let adminLink = `https://wa.me/${adminNumber}?text=${encodeURIComponent(adminMessage)}`;
+
+window.open(adminLink, "_blank");
+  
+let order = {
+  playerId: playerId,
+  package: packageName,
+  reference: response.reference,
+  time: new Date().toLocaleString()
+};
+
+orders.push(order);
+
+console.log("New Order:", order);
+  
   let message = `🔥 FIRE VAULT ORDER
 
 💎 Package: ${packageName}
