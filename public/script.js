@@ -1,3 +1,17 @@
+// 🔥 Firebase config (PASTE YOUR OWN HERE)
+const firebaseConfig = {
+  apiKey: "AIzaSyDnwV4nIVyl1roL2jtgc1_YLcvyYCGKj2Y",
+  authDomain: "fire-vault-22555.firebaseapp.com",
+  projectId: "fire-vault-22555",
+  storageBucket: "fire-vault-22555.firebasestorage.app",
+  messagingSenderId: "589168743870",
+  appId: "1:589168743870:web:38210ca30165a196d515ef"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 let orders = [];
 function payWithPaystack(amount, packageName) {
 
