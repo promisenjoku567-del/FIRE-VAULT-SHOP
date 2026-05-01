@@ -1,4 +1,4 @@
-function payWithPaystack(amount) {
+function payWithPaystack(amount, packageName) {
 
   let playerId = document.getElementById("playerId").value;
 
@@ -8,7 +8,7 @@ function payWithPaystack(amount) {
   }
 
   let handler = PaystackPop.setup({
-    key: 'YOUR_PUBLIC_KEY_HERE', // 🔥 PUT YOUR PAYSTACK KEY
+    key: 'YOUR_PUBLIC_KEY_HERE',
     email: "customer@email.com",
     amount: amount * 100,
     currency: "NGN",
@@ -24,7 +24,15 @@ function payWithPaystack(amount) {
     },
 
     callback: function(response) {
-      alert("Payment successful! Ref: " + response.reference);
+
+      let message = `Hello, I just paid for ${packageName} Diamonds.
+Player ID: ${playerId}
+Payment Ref: ${response.reference}`;
+
+      let whatsappLink = `https://wa.me/2349136828076?text=${encodeURIComponent(message)}`;
+
+      // Redirect to WhatsApp
+      window.location.href = whatsappLink;
     },
 
     onClose: function() {
@@ -33,4 +41,4 @@ function payWithPaystack(amount) {
   });
 
   handler.openIframe();
-}
+    }
