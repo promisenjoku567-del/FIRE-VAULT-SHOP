@@ -23,21 +23,27 @@ function payWithPaystack(amount, packageName) {
       ]
     },
 
-    callback: function(response) {
+callback: function(response) {
 
-      let message = `Hello, I just paid for ${packageName} Diamonds.
-Player ID: ${playerId}
-Payment Ref: ${response.reference}`;
+  let message = `🔥 FIRE VAULT ORDER
 
-      let whatsappLink = `https://wa.me/2349136828076?text=${encodeURIComponent(message)}`;
+💎 Package: ${packageName}
+🆔 Player ID: ${playerId}
+💳 Ref: ${response.reference}`;
 
-      // Redirect to WhatsApp
-      window.location.href = whatsappLink;
-    },
+  let whatsappLink = `https://wa.me/234XXXXXXXXXX?text=${encodeURIComponent(message)}`;
 
-    onClose: function() {
-      alert("Transaction cancelled");
-    }
+  document.body.innerHTML = `
+    <div style="color:white; text-align:center; padding:50px;">
+      <h1>✅ Payment Successful!</h1>
+      <p>Redirecting you to WhatsApp...</p>
+    </div>
+  `;
+
+  setTimeout(() => {
+    window.location.href = whatsappLink;
+  }, 3000);
+}
   });
 
   handler.openIframe();
