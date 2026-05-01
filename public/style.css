@@ -1,14 +1,87 @@
 body {
-  font-family: 'Orbitron', sans-serif;
-  background: black;
-  color: gold;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f0f0f;
+  color: white;
   text-align: center;
+}
+
+header {
+  background: black;
+  padding: 15px;
+  color: gold;
+  font-size: 20px;
+}
+
+.hero {
+  padding: 40px;
+}
+
+.player input {
+  padding: 12px;
+  width: 250px;
+  border-radius: 5px;
+  border: none;
+  margin-bottom: 20px;
+}
+
+.pricing {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background: #1a1a1a;
+  padding: 20px;
+  border-radius: 12px;
+  width: 220px;
+  transition: 0.3s;
+  box-shadow: 0 0 10px rgba(255,215,0,0.2);
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.best {
+  border: 2px solid gold;
+}
+
+.badge {
+  background: gold;
+  color: black;
+  padding: 5px 10px;
+  font-size: 12px;
+  display: inline-block;
+  margin-bottom: 10px;
 }
 
 button {
   background: gold;
-  color: black;
-  padding: 10px;
   border: none;
-  border-radius: 8px;
+  padding: 10px 15px;
+  cursor: pointer;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: orange;
+}
+
+.info {
+  padding: 30px;
+}
+
+.contact a {
+  display: inline-block;
+  margin: 20px;
+  padding: 12px 20px;
+  background: green;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
 }
