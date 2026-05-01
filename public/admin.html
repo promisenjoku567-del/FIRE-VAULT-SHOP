@@ -206,12 +206,14 @@ function loadOrders() {
 
         table.innerHTML += `
           <tr>
-            <td>${order.playerId}</td>
-            <td>${order.package}</td>
-            <td>₦${order.amount}</td>
-            <td>${order.reference}</td>
-            <td>${new Date(order.time).toLocaleString()}</td>
-          </tr>
+  <th>Player ID</th>
+  <th>Package</th>
+  <th>Amount</th>
+  <th>Reference</th>
+  <th>Time</th>
+  <th>Status</th>
+  <th>Action</th>
+</tr>
         `;
       });
 
