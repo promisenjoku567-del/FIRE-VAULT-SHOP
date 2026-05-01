@@ -60,6 +60,7 @@ db.collection("orders").add({
   amount: amount,
   status: "paid",
   time: new Date().toLocaleString()
+  status: "Pending"
 })
 .then(() => {
   console.log("Order saved to Firebase");
