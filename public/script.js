@@ -8,7 +8,7 @@ function payWithPaystack(amount, packageName) {
   }
 
   let handler = PaystackPop.setup({
-    key: 'YOUR_PUBLIC_KEY_HERE',
+    key: 'pk_test_3759303d3db8720fd0eb95b29004450980f0a4db',
     email: "customer@email.com",
     amount: amount * 100,
     currency: "NGN",
