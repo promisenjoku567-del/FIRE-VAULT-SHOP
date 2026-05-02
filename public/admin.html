@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +11,7 @@
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   background: #0b0b0b;
   color: white;
 }
@@ -107,12 +106,14 @@ button:hover {
 
 <body>
 
+<!-- LOGIN -->
 <div id="loginBox">
   <h2>🔥 FIRE VAULT ADMIN LOGIN</h2>
   <input type="password" id="password" placeholder="Enter Password">
   <button onclick="login()">Login</button>
 </div>
 
+<!-- DASHBOARD -->
 <div id="dashboard" style="display:none;">
 
   <div class="header">
@@ -161,7 +162,7 @@ const ADMIN_PASSWORD = "1234";
 function login() {
   let input = document.getElementById("password").value;
 
-  if(input === ADMIN_PASSWORD){
+  if (input === ADMIN_PASSWORD) {
     document.getElementById("loginBox").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
     loadOrders();
@@ -182,11 +183,9 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-function loadOrders() {
+let lastOrderCount = 0;
 
-  let total = 0;
-  let pending = 0;
-  let revenue = 0;
+function loadOrders() {
 
   db.collection("orders")
     .orderBy("time", "desc")
@@ -195,13 +194,19 @@ function loadOrders() {
       let table = document.getElementById("ordersTable");
       table.innerHTML = "";
 
+      let total = 0;
+      let pending = 0;
+      let revenue = 0;
+
+      let currentCount = snapshot.size;
+
       snapshot.forEach((doc) => {
         let order = doc.data();
 
         total++;
         revenue += Number(order.amount);
 
-        if(order.status !== "Delivered"){
+        if (order.status !== "Delivered") {
           pending++;
         }
 
@@ -226,11 +231,19 @@ function loadOrders() {
       document.getElementById("pendingOrders").innerText = pending;
       document.getElementById("totalRevenue").innerText = "₦" + revenue;
 
+      // 🔔 SOUND ALERT
+      if (lastOrderCount !== 0 && currentCount > lastOrderCount) {
+        let audio = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
+        audio.play();
+      }
+
+      lastOrderCount = currentCount;
+
     });
 
 }
 
-function markDelivered(id){
+function markDelivered(id) {
   db.collection("orders").doc(id).update({
     status: "Delivered"
   });
@@ -240,4 +253,3 @@ function markDelivered(id){
 
 </body>
 </html>
-```
