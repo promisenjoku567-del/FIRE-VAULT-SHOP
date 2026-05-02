@@ -194,6 +194,13 @@ function loadOrders() {
       snapshot.forEach((doc) => {
         let order = doc.data();
 
+total++;
+  revenue += Number(order.amount);
+
+  if(order.status !== "Delivered"){
+    pending++;
+  }
+        
         table.innerHTML += `
           <tr>
             <td>${order.playerId}</td>
