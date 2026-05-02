@@ -184,6 +184,10 @@ const db = firebase.firestore();
 
 function loadOrders() {
 
+document.getElementById("totalOrders").innerText = total;
+document.getElementById("pendingOrders").innerText = pending;
+document.getElementById("totalRevenue").innerText = "₦" + revenue;
+  
   db.collection("orders")
     .orderBy("time", "desc")
     .onSnapshot((snapshot) => {
