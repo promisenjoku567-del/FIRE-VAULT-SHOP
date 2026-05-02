@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Vault Hub</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0b0b0b;
+  color: white;
+}
+
+header {
+  text-align: center;
+  padding: 30px;
+  background: #111;
+  border-bottom: 2px solid gold;
+}
+
+header h1 {
+  color: gold;
+  margin: 0;
+}
+
+.container {
+  padding: 20px;
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.card {
+  background: #111;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid gold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card h2 {
+  color: gold;
+}
+
+button {
+  background: gold;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  margin-top: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: orange;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🔥 GAME VAULT HUB</h1>
+  <p>Select a game to top-up</p>
+</header>
+
+<div class="container">
+
+  <div class="grid">
+
+    <!-- FREE FIRE -->
+    <div class="card">
+      <h2>Free Fire</h2>
+      <p>Diamonds Top-Up</p>
+      <button onclick="openFF()">Open</button>
+    </div>
+
+    <!-- ADD MORE GAMES LATER -->
+    <div class="card">
+      <h2>Coming Soon</h2>
+      <p>More games loading...</p>
+      <button disabled>Locked</button>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+function openFF() {
+  window.location.href = "freefire.html";
+}
+
+</script>
+
+</body>
+</html>
