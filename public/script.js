@@ -13,6 +13,9 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 let orders = [];
+let total = 0;
+let pending = 0;
+let revenue = 0;
 function payWithPaystack(amount, packageName) {
 
   let playerId = document.getElementById("playerId").value;
