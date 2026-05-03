@@ -125,3 +125,29 @@ footer {
   margin-top: 50px;
   border-top: 2px solid gold;
 }
+
+.hero {
+  text-align: center;
+  padding: 100px 20px;
+  color: white;
+}
+
+.hero h1 {
+  font-size: 60px;
+  color: gold;
+}
+
+.hero p {
+  font-size: 20px;
+  margin: 20px 0;
+}
+
+.hero-btn {
+  background: gold;
+  color: black;
+  padding: 15px 30px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
