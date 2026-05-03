@@ -343,6 +343,13 @@ function payWithPaystack() {
 
  <script>
 emailjs.init("VDr9l4ponPdlPMFLS");
+   // EMAIL RECEIPT (EmailJS)
+  emailjs.send("service_zjapyfh", "template_478nbiy", {
+    uid: uid,
+    package: pkg,
+    reference: response.reference,
+    phone: phone
+  });
 </script>
 </body>
 </html>
