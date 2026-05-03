@@ -28,15 +28,11 @@ emailjs.init("VDr9l4ponPdlPMFLS");
 function payWithPaystack(amount, packageName) {
 
   let uid = document.getElementById("uid").value;
-  let phone = document.getElementById("phone").value;
 
-  if (!uid || !phone) {
-    alert("Please enter UID and WhatsApp number");
+  if (!uid) {
+    alert("Please enter your UID");
     return;
   }
-
-  document.getElementById("summaryText").innerText =
-    "Loading payment gateway...";
 
   let handler = PaystackPop.setup({
     key: "pk_test_3759303d3db8720fd0eb95b29004450980f0a4db",
@@ -46,131 +42,26 @@ function payWithPaystack(amount, packageName) {
 
     callback: function(response) {
 
-      ////////////////////////////////////////////////////
-      // SAVE ORDER TO FIREBASE
-      ////////////////////////////////////////////////////
+      alert("Payment successful: " + response.reference);
 
-      db.ref("orders").push({
-        uid: uid,
-        package: packageName,
-        phone: phone,
-        reference: response.reference,
-        status: "paid",
-        time: new Date().toLocaleString()
-      });
-
-      ////////////////////////////////////////////////////
-      // SEND EMAIL RECEIPT
-      ////////////////////////////////////////////////////
-
-      emailjs.send("service_zjapyfh", "template_478nbiy", {
+      // SAVE TO FIREBASE
+      firebase.database().ref("orders").push({
         uid: uid,
         package: packageName,
         reference: response.reference,
-        phone: phone
+        status: "paid"
       });
 
-      ////////////////////////////////////////////////////
-      // WHATSAPP RECEIPT
-      ////////////////////////////////////////////////////
-
-      let message = `🔥 FIRE VAULT RECEIPT
-
+      let message = `Fire Vault Order:
 UID: ${uid}
 Package: ${packageName}
-Reference: ${response.reference}
-Status: PAID
+Ref: ${response.reference}`;
 
-Thank you for your order`;
-
-      ////////////////////////////////////////////////////
-      // SUCCESS SCREEN
-      ////////////////////////////////////////////////////
-
-      document.body.innerHTML = `
-        <div style="color:white; text-align:center; padding:50px;">
-          <h1>✅ Payment Successful!</h1>
-          <p>Redirecting to WhatsApp...</p>
-        </div>
-      `;
-
-      setTimeout(() => {
-        window.location.href =
-          "https://wa.me/2349011567827?text=" +
-          encodeURIComponent(message);
-      }, 3000);
-    },
-
-    onClose: function () {
-      document.getElementById("summaryText").innerText =
-        "Payment cancelled";
+      window.location.href =
+        "https://wa.me/2349011567827?text=" +
+        encodeURIComponent(message);
     }
   });
 
   handler.openIframe();
-}
-
-////////////////////////////////////////////////////
-// ORDER SUMMARY
-////////////////////////////////////////////////////
-
-function updateSummary() {
-  let uid = document.getElementById("uid").value;
-
-  document.getElementById("summaryText").innerText =
-    `UID: ${uid || "-"}`;
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-
-  const uidInput = document.getElementById("uid");
-
-  if (uidInput) {
-    uidInput.addEventListener("input", updateSummary);
-  }
-
-  if (packageInput) {
-    packageInput.addEventListener("change", updateSummary);
-  }
-});
-
-////////////////////////////////////////////////////
-// POPUP
-////////////////////////////////////////////////////
-
-function showPopup(packageName, price) {
-  document.getElementById("popup").style.display = "block";
-  document.getElementById("popupTitle").innerText = packageName;
-  document.getElementById("popupPrice").innerText = price;
-}
-
-function closePopup() {
-  document.getElementById("popup").style.display = "none";
-}
-
-////////////////////////////////////////////////////
-// WHATSAPP MANUAL ORDER
-////////////////////////////////////////////////////
-
-function submitOrder() {
-  let uid = document.getElementById("uid").value;
-  let pkg = document.getElementById("package").value;
-  let phone = document.getElementById("phone").value;
-
-  if (!uid || !phone) {
-    alert("Please fill all fields");
-    return;
-  }
-
-  let message = `🔥 Fire Vault Order
-
-UID: ${uid}
-Package: ${pkg}
-WhatsApp: ${phone}`;
-
-  window.open(
-    "https://wa.me/2349011567827?text=" +
-    encodeURIComponent(message),
-    "_blank"
-  );
 }
