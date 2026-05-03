@@ -170,7 +170,11 @@ button:hover {
 <script>
 
 function openFF() {
-  window.location.href = "freefire.html";
+  document.body.classList.add("fade-out");
+
+  setTimeout(() => {
+    window.location.href = "freefire.html";
+  }, 500);
 }
 </script>
   
