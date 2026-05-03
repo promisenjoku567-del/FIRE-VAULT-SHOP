@@ -335,14 +335,11 @@ WhatsApp: ${phone}`;
 function payWithPaystack() {
   let handler = PaystackPop.setup({
     key: 'pk_test_3759303d3db8720fd0eb95b29004450980f0a4db',
-    email: document.getElementById("phone").value + "@gmail.com",
-    amount: 151200, // ₦1,512 in kobo
+    email: "test@gmail.com",
+    amount: 151200,
     currency: "NGN",
     callback: function(response) {
-      alert("Payment successful! Ref: " + response.reference);
-    },
-    onClose: function() {
-      alert("Payment cancelled");
+      alert("Payment successful: " + response.reference);
     }
   });
 
