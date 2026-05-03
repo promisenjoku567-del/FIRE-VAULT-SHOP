@@ -41,22 +41,22 @@ function payWithPaystack(amount, packageName) {
       ]
     },
 
-    callback: function(response) {
+   callback: function(response) {
 
-      let message = `🔥 FIRE VAULT ORDER
-💎 Package: ${packageName}
-🆔 Player ID: ${playerId}
-💳 Ref: ${response.reference}`;
+  let uid = document.getElementById("uid").value;
+  let pkg = document.getElementById("package").value;
+  let phone = document.getElementById("phone").value;
 
-      db.collection("orders").add({
-        playerId: playerId,
-        package: packageName,
-        reference: response.reference,
-        amount: amount,
-        status: "Pending",
-        time: Date.now()
-      });
+  db.ref("orders").push({
+    uid: uid,
+    package: pkg,
+    phone: phone,
+    reference: response.reference,
+    status: "paid"
+  });
 
+  alert("Payment successful!");
+}
       document.body.innerHTML = `
         <div style="color:white; text-align:center; padding:50px;">
           <h1>✅ Payment Successful!</h1>
