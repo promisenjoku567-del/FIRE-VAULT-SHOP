@@ -149,6 +149,7 @@
   
   <!-- Paystack -->
   <script src="https://js.paystack.co/v1/inline.js"></script>
+ <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 </head>
 
 <body>
@@ -336,6 +337,10 @@ function payWithPaystack() {
 
   handler.openIframe();
 }
+</script>
+
+ <script>
+emailjs.init("YOUR_PUBLIC_KEY");
 </script>
 </body>
 </html>
