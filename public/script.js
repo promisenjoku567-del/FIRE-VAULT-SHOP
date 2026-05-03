@@ -16,6 +16,8 @@ firebase.initializeApp(firebaseConfig);
 // ✔ USE REALTIME DATABASE (NOT FIRESTORE)
 const db = firebase.database();
 
+emailjs.init("VDr9l4ponPdlPMFLS");
+
 ////////////////////////////////////////////////////
 // 💳 PAYSTACK PAYMENT
 ////////////////////////////////////////////////////
