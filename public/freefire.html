@@ -234,6 +234,21 @@ function toggleMenu() {
     <a id="popupBtn" class="checkout-btn">Proceed to Checkout</a>
     <button onclick="closePopup()">Close</button>
   </div>
-</div>
+ </div>
+
+ <script>
+function showPopup(packageName, price) {
+  document.getElementById("popup").style.display = "block";
+  document.getElementById("popupTitle").innerText = packageName;
+  document.getElementById("popupPrice").innerText = price;
+
+  document.getElementById("popupBtn").href =
+  "https://wa.me/2349011567827?text=I want to order " + packageName;
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+</script>
 </body>
 </html>
