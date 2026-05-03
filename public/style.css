@@ -107,6 +107,11 @@ button:hover {
   padding: 40px;
 }
 
+.pricing h2 {
+  text-decoration: underline;
+  text-decoration-color: gold;
+}
+  
 .pricing-card {
   background: #111;
   border: 2px solid gold;
@@ -135,6 +140,8 @@ footer {
 .hero h1 {
   font-size: 60px;
   color: gold;
+  text-shadow: 0 0 10px gold, 0 0 20px orange;
+  letter-spacing: 4px;
 }
 
 .hero p {
@@ -151,3 +158,6 @@ footer {
   font-weight: bold;
 }
 
+a {
+  text-decoration: none;
+}
