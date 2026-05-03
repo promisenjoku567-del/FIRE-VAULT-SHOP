@@ -113,6 +113,24 @@
   header {
     padding: 20px;
   }
+ }
+
+ .order-form {
+  text-align: center;
+  padding: 40px;
+}
+
+.order-form input,
+.order-form select {
+  width: 80%;
+  padding: 14px;
+  margin: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+.order-form button {
+  width: 80%;
 }
   </style>
  
@@ -209,6 +227,23 @@
   </a>
 </section>
 
+<section class="order-form">
+  <h2>Place Your Order</h2>
+
+  <input type="text" id="uid" placeholder="Enter Free Fire UID">
+
+  <select id="package">
+    <option>100 Diamonds - ₦1,512</option>
+    <option>310 Diamonds - ₦4,536</option>
+    <option>520 Diamonds - ₦7,560</option>
+    <option>1060 Diamonds - ₦15,120</option>
+  </select>
+
+  <input type="text" id="phone" placeholder="WhatsApp Number">
+
+  <button onclick="submitOrder()">Proceed to Checkout</button>
+</section>
+ 
  <footer>
     © 2026 Fire Vault | Fast & Secure Diamond Top-Up
   </footer>
@@ -249,6 +284,24 @@ function showPopup(packageName, price) {
 
 function closePopup() {
   document.getElementById("popup").style.display = "none";
+}
+</script>
+
+ <script>
+function submitOrder() {
+  let uid = document.getElementById("uid").value;
+  let pkg = document.getElementById("package").value;
+  let phone = document.getElementById("phone").value;
+
+  let message = `Hello, I want to order:
+UID: ${uid}
+Package: ${pkg}
+WhatsApp: ${phone}`;
+
+  window.open(
+    "https://wa.me/2349011567827?text=" + encodeURIComponent(message),
+    "_blank"
+  );
 }
 </script>
 </body>
