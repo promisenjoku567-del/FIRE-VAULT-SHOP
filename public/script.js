@@ -22,7 +22,7 @@ const db = firebase.database();
 emailjs.init("VDr9l4ponPdlPMFLS");
 
 ////////////////////////////////////////////////////
-// PAYSTACK PAYMENT
+// PAYSTACK
 ////////////////////////////////////////////////////
 
 function payWithPaystack(amount, packageName) {
@@ -40,38 +40,49 @@ function payWithPaystack(amount, packageName) {
     amount: amount * 100,
     currency: "NGN",
 
-callback: function(response) {
+    callback: function(response) {
 
-  const orderData = {
-    uid: uid,
-    package: packageName,
-    phone: phone || "Not provided",
-    reference: response.reference,
-    status: "paid",
-    time: new Date().toLocaleString()
-  };
+      const orderData = {
+        uid: uid,
+        package: packageName,
+        reference: response.reference,
+        status: "paid",
+        time: new Date().toLocaleString()
+      };
 
-  db.ref("orders").push(orderData)
-    .then(() => {
+      db.ref("orders").push(orderData)
+      .then(() => {
 
-      emailjs.send("service_zjapyfh", "template_478nbiy", orderData);
+        emailjs.send(
+          "service_zjapyfh",
+          "template_478nbiy",
+          orderData
+        );
 
-      alert("Payment successful and order saved!");
+        alert("Payment successful and order saved!");
 
-      let message = `🔥 FIRE VAULT ORDER
+        let message = `🔥 FIRE VAULT ORDER
 
 UID: ${uid}
 Package: ${packageName}
 Reference: ${response.reference}
 Status: PAID`;
 
-      window.location.href =
-        "https://wa.me/2349011567827?text=" +
-        encodeURIComponent(message);
+        window.location.href =
+          "https://wa.me/2349011567827?text=" +
+          encodeURIComponent(message);
 
-    })
-    .catch((error) => {
-      alert("Firebase save failed: " + error.message);
-      console.log(error);
-    });
+      })
+      .catch((error) => {
+        alert("Firebase save failed: " + error.message);
+        console.log(error);
+      });
+    },
+
+    onClose: function() {
+      alert("Payment cancelled");
+    }
+  });
+
+  handler.openIframe();
 }
