@@ -208,3 +208,35 @@ a {
   50% { box-shadow: 0 0 20px gold; }
   100% { box-shadow: 0 0 5px gold; }
 }
+
+let selectedAmount = 0;
+let selectedPackage = "";
+
+function openCheckout(amount, pkg) {
+  selectedAmount = amount;
+  selectedPackage = pkg;
+
+  document.getElementById("checkout").style.display = "block";
+  document.getElementById("pkgName").innerText = pkg;
+  document.getElementById("pkgPrice").innerText = "₦" + amount;
+}
+
+function closeCheckout() {
+  document.getElementById("checkout").style.display = "none";
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  document.getElementById("payBtn").addEventListener("click", function () {
+
+    let uid = document.getElementById("popupUid").value;
+
+    if (!uid) {
+      alert("Enter UID");
+      return;
+    }
+
+    payWithPaystack(selectedAmount, selectedPackage);
+  });
+});
+     
