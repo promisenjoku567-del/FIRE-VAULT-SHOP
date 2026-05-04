@@ -40,28 +40,38 @@ function payWithPaystack(amount, packageName) {
     amount: amount * 100,
     currency: "NGN",
 
-    callback: function(response) {
+callback: function(response) {
 
-      alert("Payment successful: " + response.reference);
+  const orderData = {
+    uid: uid,
+    package: packageName,
+    phone: phone || "Not provided",
+    reference: response.reference,
+    status: "paid",
+    time: new Date().toLocaleString()
+  };
 
-      // SAVE TO FIREBASE
-      firebase.database().ref("orders").push({
-        uid: uid,
-        package: packageName,
-        reference: response.reference,
-        status: "paid"
-      });
+  db.ref("orders").push(orderData)
+    .then(() => {
 
-      let message = `Fire Vault Order:
+      emailjs.send("service_zjapyfh", "template_478nbiy", orderData);
+
+      alert("Payment successful and order saved!");
+
+      let message = `🔥 FIRE VAULT ORDER
+
 UID: ${uid}
 Package: ${packageName}
-Ref: ${response.reference}`;
+Reference: ${response.reference}
+Status: PAID`;
 
       window.location.href =
         "https://wa.me/2349011567827?text=" +
         encodeURIComponent(message);
-    }
-  });
 
-  handler.openIframe();
+    })
+    .catch((error) => {
+      alert("Firebase save failed: " + error.message);
+      console.log(error);
+    });
 }
