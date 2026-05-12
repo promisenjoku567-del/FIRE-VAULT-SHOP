@@ -190,49 +190,55 @@ let lastOrderCount = 0;
 
 function loadOrders() {
 
-  db.collection("orders")
-    .orderBy("time", "desc")
-    .onSnapshot((snapshot) => {
+  db.ref("orders").on("value", (snapshot) => {
 
-      let table = document.getElementById("ordersTable");
-      table.innerHTML = "";
+    let table = document.getElementById("ordersTable");
+    table.innerHTML = "";
 
-      let total = 0;
-      let pending = 0;
-      let revenue = 0;
+    let total = 0;
+    let pending = 0;
+    let revenue = 0;
 
-      let currentCount = snapshot.size;
+    const data = snapshot.val();
 
-      snapshot.forEach((doc) => {
-        let order = doc.data();
+    if (!data) return;
 
-        total++;
-        revenue += Number(order.amount);
+    Object.keys(data).reverse().forEach((key) => {
 
-        if (order.status !== "Delivered") {
-          pending++;
-        }
+      let order = data[key];
 
-        table.innerHTML += `
-          <tr>
-            <td>${order.playerId}</td>
-            <td>${order.package}</td>
-            <td>₦${order.amount}</td>
-            <td>${order.reference}</td>
-            <td>${new Date(order.time).toLocaleString()}</td>
-            <td>${order.status || "Pending"}</td>
-            <td>
-              <button onclick="markDelivered('${doc.id}')">
-                Mark Delivered
-              </button>
-            </td>
-          </tr>
-        `;
-      });
+      total++;
 
-      document.getElementById("totalOrders").innerText = total;
-      document.getElementById("pendingOrders").innerText = pending;
-      document.getElementById("totalRevenue").innerText = "₦" + revenue;
+      revenue += Number(order.amount || 0);
+
+      if (order.status !== "Delivered") {
+        pending++;
+      }
+
+      table.innerHTML += `
+        <tr>
+          <td>${order.uid || ""}</td>
+          <td>${order.package || ""}</td>
+          <td>₦${order.amount || 0}</td>
+          <td>${order.reference || ""}</td>
+          <td>${order.time || ""}</td>
+          <td>${order.status || "Pending"}</td>
+          <td>
+            <button onclick="markDelivered('${key}')">
+              Mark Delivered
+            </button>
+          </td>
+        </tr>
+      `;
+    });
+
+    document.getElementById("totalOrders").innerText = total;
+    document.getElementById("pendingOrders").innerText = pending;
+    document.getElementById("totalRevenue").innerText = "₦" + revenue;
+
+  });
+
+}
 
       // 🔔 SOUND ALERT
       if (lastOrderCount !== 0 && currentCount > lastOrderCount) {
