@@ -175,16 +175,15 @@ function login() {
 const firebaseConfig = {
   apiKey: "AIzaSyDnwV4nIVyl1roL2jtgc1_YLcvyYCGKj2Y",
   authDomain: "fire-vault-22555.firebaseapp.com",
- databaseURL:
-"https://fire-vault-22555-default-rtdb.europe-west1.firebasedatabase.app",
+  databaseURL: "https://fire-vault-22555-default-rtdb.firebaseio.com",
   projectId: "fire-vault-22555",
-  storageBucket: "fire-vault-22555.firebasestorage.app",
+  storageBucket: "fire-vault-22555.appspot.com",
   messagingSenderId: "589168743870",
   appId: "1:589168743870:web:38210ca30165a196d515ef"
 };
 
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+const db = firebase.database();
 
 let lastOrderCount = 0;
 
@@ -200,15 +199,15 @@ function loadOrders() {
     let revenue = 0;
 
     const data = snapshot.val();
-
     if (!data) return;
 
-    Object.keys(data).reverse().forEach((key) => {
+    const keys = Object.keys(data).reverse();
+
+    keys.forEach((key) => {
 
       let order = data[key];
 
       total++;
-
       revenue += Number(order.amount || 0);
 
       if (order.status !== "Delivered") {
@@ -237,30 +236,10 @@ function loadOrders() {
     document.getElementById("totalRevenue").innerText = "₦" + revenue;
 
   });
-
-}
-
-      // 🔔 SOUND ALERT
-      if (lastOrderCount !== 0 && currentCount > lastOrderCount) {
-        let audio = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
-        audio.play();
-      }
-
-      lastOrderCount = currentCount;
-
-    });
-
 }
 
 function markDelivered(id) {
-
   db.ref("orders/" + id).update({
     status: "Delivered"
   });
-
 }
-
-</script>
-
-</body>
-</html>
