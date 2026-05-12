@@ -253,9 +253,11 @@ function loadOrders() {
 }
 
 function markDelivered(id) {
-  db.collection("orders").doc(id).update({
+
+  db.ref("orders/" + id).update({
     status: "Delivered"
   });
+
 }
 
 </script>
